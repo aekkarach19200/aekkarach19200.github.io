@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDRU Ambassador 2025 - Masquerade Party Timer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #0f0f0f 50%, #1a1a1a 75%, #0a0a0a 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated background sparkles */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #D4AF37;
+            border-radius: 50%;
+            animation: sparkleFloat 8s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        .sparkle:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 20%; left: 80%; animation-delay: 1s; }
+        .sparkle:nth-child(3) { top: 60%; left: 10%; animation-delay: 2s; }
+        .sparkle:nth-child(4) { top: 80%; left: 70%; animation-delay: 3s; }
+        .sparkle:nth-child(5) { top: 30%; left: 90%; animation-delay: 4s; }
+        .sparkle:nth-child(6) { top: 70%; left: 20%; animation-delay: 5s; }
+
+        @keyframes sparkleFloat {
+            0%, 100% { opacity: 0; transform: translateY(0px) scale(1); }
+            50% { opacity: 1; transform: translateY(-20px) scale(1.5); }
+        }
+
+        /* Logo container with glow effect */
+        .logo-container {
+            margin-bottom: 50px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 300px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            animation: logoGlow 3s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.5));
+        }
+
+        @keyframes logoGlow {
+            from { filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.5)); }
+            to { filter: drop-shadow(0 0 50px rgba(212, 175, 55, 0.9)); }
+        }
+
+        .stars {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 35px;
+            color: #D4AF37;
+            animation: starTwinkle 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes starTwinkle {
+            from { opacity: 0.6; transform: translateX(-50%) scale(1); }
+            to { opacity: 1; transform: translateX(-50%) scale(1.1); }
+        }
+
+        /* Timer display */
+        .timer-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .timer-display {
+            font-size: 120px;
+            font-weight: 700;
+            color: #D4AF37;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+            letter-spacing: 10px;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 20px;
+            animation: timerPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes timerPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .event-title {
+            font-size: 36px;
+            color: #D4AF37;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.6);
+            margin-bottom: 10px;
+            letter-spacing: 3px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #B8860B;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        /* Control panel */
+        .controls {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: rgba(26, 26, 26, 0.9);
+            border: 2px solid #D4AF37;
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            color: #D4AF37;
+            font-weight: 600;
+            min-width: 80px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .control-group input {
+            background: rgba(10, 10, 10, 0.8);
+            border: 1px solid #D4AF37;
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: #D4AF37;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .control-group input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            color: #000;
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+            width: 100%;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .start-btn:active {
+            transform: translateY(0px);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .timer-display {
+                font-size: 80px;
+            }
+            
+            .event-title {
+                font-size: 24px;
+            }
+            
+            .controls {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                padding: 20px;
+            }
+            
+            .logo {
+                width: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                width: 200px;
+            }
+            
+            .timer-display {
+                font-size: 60px;
+                letter-spacing: 5px;
+            }
+            
+            .event-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background sparkles -->
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <!-- Logo section -->
+    <div class="logo-container">
+        
+        <img class="logo" src="https://phop14.github.io/Ambass/8308d4b7-8fad-4326-9f27-caf0ceebb4a7-removebg-preview.png" alt="UDRU Ambassador 2025">
+    </div>
+
+    <!-- Timer section -->
+    <div class="timer-container">
+        <div class="event-title">MASQUERADE PARTY</div>
+        <div class="timer-display" id="timerDisplay">05:00</div>
+    </div>
+
+    <!-- Control panel -->
+    <div class="controls">
+        <div class="control-group">
+            <label>MINUTE</label>
+            <input type="number" id="minuteInput" value="5" min="0" max="99">
+        </div>
+        <div class="control-group">
+            <label>SECOND</label>
+            <input type="number" id="secondInput" value="0" min="0" max="59">
+        </div>
+        <button class="start-btn" id="startBtn">START</button>
+    </div>
+
+    <script>
+        let timerInterval;
+        let isRunning = false;
+        let timeLeft = 300; // 5 minutes in seconds
+
+        const timerDisplay = document.getElementById('timerDisplay');
+        const minuteInput = document.getElementById('minuteInput');
+        const secondInput = document.getElementById('secondInput');
+        const startBtn = document.getElementById('startBtn');
+
+        function updateDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!isRunning) {
+                // Start timer
+                timeLeft = parseInt(minuteInput.value) * 60 + parseInt(secondInput.value);
+                isRunning = true;
+                startBtn.textContent = 'STOP';
+                startBtn.style.background = 'linear-gradient(135deg, #8B0000, #B22222)';
+                
+                timerInterval = setInterval(() => {
+                    timeLeft--;
+                    updateDisplay();
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        isRunning = false;
+                        startBtn.textContent = 'START';
+                        startBtn.style.background = 'linear-gradient(135deg, #D4AF37, #B8860B)';
+                        
+                        // Flash effect when timer ends
+                        timerDisplay.style.color = '#FF0000';
+                        setTimeout(() => {
+                            timerDisplay.style.color = '#D4AF37';
+                        }, 1000);
+                        
+                        alert('เวลาหมดแล้ว! Time\'s up!');
+                    }
+                }, 1000);
+            } else {
+                // Stop timer
+                clearInterval(timerInterval);
+                isRunning = false;
+                startBtn.textContent = 'START';
+                startBtn.style.background = 'linear-gradient(135deg, #D4AF37, #B8860B)';
+            }
+        }
+
+        startBtn.addEventListener('click', startTimer);
+
+        minuteInput.addEventListener('input', () => {
+            if (!isRunning) {
+                timeLeft = parseInt(minuteInput.value) * 60 + parseInt(secondInput.value);
+                updateDisplay();
+            }
+        });
+
+        secondInput.addEventListener('input', () => {
+            if (!isRunning) {
+                timeLeft = parseInt(minuteInput.value) * 60 + parseInt(secondInput.value);
+                updateDisplay();
+            }
+        });
+
+        // Initialize display
+        updateDisplay();
+    </script>
+</body>
+</html>
